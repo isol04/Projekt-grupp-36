@@ -2,25 +2,36 @@
 
 namespace Spelprojekt_grupp36
 {
+
+
+    // Isac Olsson, Arvid Malmqvist, Usama Rabto -- 23/10-2023 -- Visual Studio 2022 
     internal class Program
     {
-        
+        static string senastDrag = "";
+
         static bool spelaresTur = true;
-        static int a = 5;
-        static int b = 5;
-        static int c = 5;
+       
+        static int spelare1vinnster = 0;
+        static int spelare2vinnster = 0;
+
+        static bool pausad = false;
+        static bool namnAnget = false;
+
+        static string spelare1 = "";
+        static string spelare2 = "";
+        static int[] pinnar = { 5, 5, 5 };
         static bool inGame = false;
         static bool ProgramAktivt = true;
         static void Main(string[] args)
         {
-
+           
             do
             {
 
                 Console.WriteLine(regler());
                 Console.WriteLine(" \r\nskriv start för att starta spelet eller stop för att stänga av programmet!");
                 string input = Console.ReadLine();
-                if  (input == "start")
+                if (input == "start")
                 {
                     inGame = true;
                 }
@@ -28,183 +39,163 @@ namespace Spelprojekt_grupp36
                 {
                     ProgramAktivt = false;
                 }
-                while (inGame) 
+                while (inGame)
                 {
-
-
-                    if (a == 0 && b == 0 && c == 0)
+                    while (!namnAnget)
                     {
-                        Vinnare(!spelaresTur);
+                        angeNamn(); namnAnget = true;
+                    }
 
+
+
+                    if (pinnar[0] == 0 && pinnar[1] == 0 && pinnar[2] == 0)
+                    {
+                        VinnareOchPaus();
                     }
                     else
                     {
-                        Uppdatera(a, b, c);
-                        Drag(spelaresTur, a, b, c);
+                        Uppdatera();
+                        Draget();
                     }
 
 
-                }
-               
 
+                }
+                
             }
             while (ProgramAktivt);
         }
 
-        static void Vinnare(bool spelare)
+        static void angeNamn()
         {
-            if (spelare) { Console.WriteLine("spelare 1 vinner!"); }
-            else { Console.WriteLine("spelare 2 vinner! \r\n"); }
-
-            a = 5;
-            b = 5;
-            c = 5;
-
-            //nollställer spelet
-            
+            Console.Clear();
+            Console.WriteLine("spelare 1, ange ditt namn!");
+            spelare1 = Console.ReadLine();
+            Console.WriteLine("spelare 2, ange ditt namn!");
+            spelare2 = Console.ReadLine();
         }
 
-        static string regler()
+        static string aktivSpelareNamn()
         {
-
-            string regler = "Välkommen till spelet Nim! \n\n\n\n Nims regler lyder följande: \n 1. Spelet börjar med att 15 pinnar placeras i tre olika lika stora högar. \n 2. Därefter väljer startspelaren först en hög och sedan eliminerar spelaren x antal pinnar från den högen (minst en pinne). \n 3. Därefter gör nästa spelare sak. \n 4. Spelarna turas sedan om till att endast en pinne kvarstår. \n 5. Spelaren som väljer den sista pinnen vinner då spelet.";
-
-            return regler;
-
-
+            if (spelaresTur) return spelare1;
+            else return spelare2;
         }
-
-
-
-
-
-        static void Drag(bool spelare, int hög1, int hög2, int hög3)
+        static void VinnareOchPaus()
         {
-            if (spelare == true) //avgör vems tur det är
-            {
-                Console.WriteLine("Det är spelare 1s tur");
-            }
-            else Console.WriteLine("Det är spelare 2s tur");
+            spelaresTur = !spelaresTur;
+            pinnar = new int[] { 5, 5, 5 };
+            pausad = true;
+            Console.Clear();
 
-            try //denna try-catch kollar ifall högen man tar ifrån finns och 
-            {
-                Console.WriteLine("Ange vilken hög du vill ta från");
-                int drag = int.Parse(Console.ReadLine());
-                switch (drag)
-                {
-                    case 1:
-                        finnsHögKvar(hög1, 1);
-                        return;
-
-                    case 2:
-                        finnsHögKvar(hög2, 2);
-                        return;
-
-                    case 3:
-                        finnsHögKvar(hög3, 3);
-                        return;
-                    default:
-                        Console.WriteLine("Högen var utanför index, pröva igen\r\n");
-                        Drag(spelaresTur, a, b, c);
-                        return;
-                }
-            }
-            catch
-            {
-                Console.WriteLine("något gick fel, pröva igen\r\n");
-
-                Drag(spelaresTur, a, b, c);
-
-            }
-
-
-        }
-
-        static void finnsPinnarKvar(int antalIhög, int högNr)
-        {
-            try
-            {
-                Console.WriteLine("Ange hur många pinnar du vill ta från högen");
-                int antalTagna = int.Parse(Console.ReadLine());
-
-
-                if (antalIhög < antalTagna)
-                {
-                    Console.WriteLine("Du tar för många pinnar! försök igen\r\n");
-                    finnsPinnarKvar(antalIhög, högNr);
-
-                }
-                else
-                {
-                    switch (högNr)
-                    {
-                        case 1:
-                            a -= antalTagna;
-                            spelaresTur = !spelaresTur;
-                            return;
-                        case 2:
-                            b -= antalTagna;
-                            spelaresTur = !spelaresTur;
-                            return;
-                        case 3:
-                            c -= antalTagna;
-                            spelaresTur = !spelaresTur;
-                            return;
-                    }
-
-                }
-
-
-
-
-            }
-            catch
-            {
-                Console.WriteLine("Något gick fel, försök igen\r\n");
-                {
-                    finnsPinnarKvar(antalIhög, högNr);
-                }
-            }
-
-
-        }
-    
-
-
-        static void finnsHögKvar(int antalIhög, int högNr)
-        {
-            if (antalIhög != 0)
-            { 
-                finnsPinnarKvar(antalIhög, högNr);
-            
-            }
-
+            if (spelaresTur) { Console.WriteLine(aktivSpelareNamn() + " vinner!\r\n"); spelare1vinnster++; }
             else
             {
-                Console.WriteLine("Högen var tom! försök igen\r\n");
-
-                Drag(spelaresTur, a, b, c);
+                Console.WriteLine(aktivSpelareNamn() + " vinner! \r\n"); spelare2vinnster++;
             }
 
-        }
+
+         
+            while (pausad)
+            {
+                Console.WriteLine("Antal vinster " + spelare1 + ": " + spelare1vinnster + " | Antal vinster " + spelare2 + ": " + spelare2vinnster);
+                Console.WriteLine("spela igen? (y/n)");
+                if (Console.ReadLine() == "y")
+                {
+                    pausad = false;
+                }
+                else if (Console.ReadLine() == "n")
+                {
+                    inGame = false;
+                    namnAnget = false;
+                    spelare1vinnster = 0; spelare2vinnster = 0;
+
+                }
+                }
+            }
+            static string regler()
+            {
+                string regler = "Välkommen till spelet Nim! \n\n\n\n Nims regler lyder följande: \n 1. Spelet börjar med att 15 pinnar placeras i tre olika lika stora högar. \n 2. Därefter väljer startspelaren först en hög och sedan eliminerar spelaren x antal pinnar från den högen (minst en pinne). \n 3. Därefter gör nästa spelare sak. \n 4. Spelarna turas sedan om till att endast en pinne kvarstår. \n 5. Spelaren som väljer den sista pinnen vinner då spelet.";
+
+                return regler;
+            }
+            static void Draget()
+
+            {
+              
+                    Console.WriteLine("Det är " + aktivSpelareNamn() + "s tur");
+            
+
+                try
+                {
+                    Console.WriteLine("ange ditt drag");
+                    string[] drag = Console.ReadLine().Trim().Split(' ');
+
+                    if (möjligtDrag(int.Parse(drag[0]), int.Parse(drag[1])))
+                    {
+                        pinnar[int.Parse(drag[0]) - 1] -= int.Parse(drag[1]);
+                       
+                        Uppdatera();
+                        senastDrag = (aktivSpelareNamn() + " tog " + drag[1] + " stickor från hög " + drag[0]);
+                    spelaresTur = !spelaresTur;
+                }
+                    else
+                    {
+                        Uppdatera();
+                        Console.WriteLine("Draget var icke möjligt, försök igen!");
+                        Draget();
+                    }
+
+
+                }
+                catch
+                {
+                    Uppdatera();
+                    Console.WriteLine("Draget var icke möjligt, försök igen!");
+                    Draget();
+                }
+            
+            }
+
+            static bool möjligtDrag(int a, int b)
+            {
+                try
+                {
+                    if (pinnar[a - 1] < b || b <= 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         
-        static void Uppdatera(int hög1, int hög2, int hög3) //ritar upp pinnar
-        {
-            for (int i = 0; i < hög1;  i++)
+
+            static void Uppdatera() //ritar upp pinnar
             {
-                Console.Write("| ");
+                Console.Clear();
+                Console.WriteLine(senastDrag);
+                Console.Write("hög 1: ");
+                for (int i = 0; i < pinnar[0]; i++)
+                {
+                    Console.Write("| ");
+                }
+                Console.WriteLine();
+                Console.Write("hög 2: ");
+                for (int i = 0; i < pinnar[1]; i++)
+                {
+                    Console.Write("| ");
+                }
+                Console.WriteLine();
+                Console.Write("hög 3: ");
+                for (int i = 0; i < pinnar[2]; i++)
+                {
+                    Console.Write("| ");
+                }
+                Console.WriteLine();
             }
-            Console.WriteLine();
-            for (int i = 0; i < hög2; i++)
-            {
-                Console.Write("| ");
-            }
-            Console.WriteLine();
-            for (int i = 0; i < hög3; i++)
-            {
-                Console.Write("| ");
-            }
-            Console.WriteLine();
         }
     }
-}
