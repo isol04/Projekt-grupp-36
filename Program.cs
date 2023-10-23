@@ -249,7 +249,7 @@ namespace Spelprojekt_grupp36
                 }
                 else
                 {
-                    Console.WriteLine("ange ditt drag");
+                    Console.WriteLine("ange ditt drag i formatet: <hög> <antal>");
                   drag = Console.ReadLine().Trim().Split(' ');
                 }
 
