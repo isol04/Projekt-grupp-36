@@ -5,7 +5,7 @@ namespace Spelprojekt_grupp36
     internal class Program
     {
 
-        static int spelaresTur = 0;
+        static bool spelaresTur = true;
         static int a = 5;
         static int b = 5;
         static int c = 5;
@@ -17,10 +17,11 @@ namespace Spelprojekt_grupp36
 
             do
             {
-                //if (Console.ReadLine() == "pause")
-                //{
-                //    Pausa();
-                //}
+                
+                if (a == 0 && b == 0 && c == 0)
+                {
+                    Vinnare(!spelaresTur);
+                }
 
                 Uppdatera(a, b, c);
                 Drag(spelaresTur, a, b, c);
@@ -33,9 +34,19 @@ namespace Spelprojekt_grupp36
 
         }
 
-        static void Drag(int spelare, int hög1, int hög2, int hög3)
+        static void Vinnare(bool spelare)
         {
-            if (spelare == 0)
+            if (spelare) { Console.WriteLine("spelare 1 vinner!"); }
+            else { Console.WriteLine("spelare 2 vinner! \r\n"); }
+
+            a = 5;
+            b = 5;
+            c = 5;
+            
+        }
+        static void Drag(bool spelare, int hög1, int hög2, int hög3)
+        {
+            if (spelare == true)
             {
                 Console.WriteLine("Det är spelare 1s tur");
             }
@@ -43,7 +54,7 @@ namespace Spelprojekt_grupp36
 
             try
             {
-                Console.WriteLine("ange vilken hög");
+                Console.WriteLine("Ange vilken hög du vill ta från");
                 int drag = int.Parse(Console.ReadLine());
                 switch (drag)
                 {
@@ -59,14 +70,14 @@ namespace Spelprojekt_grupp36
                         finnsHögKvar(hög3, 3);
                         return;
                     default:
-                        Console.WriteLine("högen var utanför index, pröva igen");
+                        Console.WriteLine("Högen var utanför index, pröva igen\r\n");
                         Drag(spelaresTur, a, b, c);
                         return;
                 }
             }
             catch
             {
-                Console.WriteLine("något gick fel, pröva igen");
+                Console.WriteLine("något gick fel, pröva igen\r\n");
 
                 Drag(spelaresTur, a, b, c);
 
@@ -79,13 +90,13 @@ namespace Spelprojekt_grupp36
         {
             try
             {
-                Console.WriteLine("ange hur många pinnar du vill ta");
+                Console.WriteLine("Ange hur många pinnar du vill ta från högen");
                 int antalTagna = int.Parse(Console.ReadLine());
 
 
                 if (antalIhög < antalTagna)
                 {
-                    Console.WriteLine("du tar för många pinnar! försök igen");
+                    Console.WriteLine("Du tar för många pinnar! försök igen\r\n");
                     finnsPinnarKvar(antalIhög, högNr);
 
                 }
@@ -95,18 +106,17 @@ namespace Spelprojekt_grupp36
                     {
                         case 1:
                             a -= antalTagna;
+                            spelaresTur = !spelaresTur;
                             return;
                         case 2:
                             b -= antalTagna;
+                            spelaresTur = !spelaresTur;
                             return;
                         case 3:
                             c -= antalTagna;
+                            spelaresTur = !spelaresTur;
                             return;
-
-
-
                     }
-
 
                 }
 
@@ -116,7 +126,7 @@ namespace Spelprojekt_grupp36
             }
             catch
             {
-                Console.WriteLine("något gick fel, försök igen");
+                Console.WriteLine("Något gick fel, försök igen\r\n");
                 {
                     finnsPinnarKvar(antalIhög, högNr);
                 }
@@ -137,7 +147,7 @@ namespace Spelprojekt_grupp36
 
             else
             {
-                Console.WriteLine("högen var tom! försök igen");
+                Console.WriteLine("Högen var tom! försök igen\r\n");
 
                 Drag(spelaresTur, a, b, c);
             }
