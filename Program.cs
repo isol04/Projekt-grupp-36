@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 
+// Isac Olsson, Arvid Malmqvist, Usama Rabto -- 23/10-2023 -- Visual Studio 2022 
 namespace Spelprojekt_grupp36
 {
 
 
-    // Isac Olsson, Arvid Malmqvist, Usama Rabto -- 23/10-2023 -- Visual Studio 2022 
     internal class Program
     {
         static string senastDrag = "";
@@ -19,7 +19,7 @@ namespace Spelprojekt_grupp36
 
         static string spelare1 = "";
         static string spelare2 = "";
-        static int[] pinnar = { 5, 5, 5 };
+        static int[] pinnar = new int[3]; 
         static bool inGame = false;
         static bool ProgramAktivt = true;
         static void Main(string[] args)
@@ -29,10 +29,11 @@ namespace Spelprojekt_grupp36
             {
 
                 Console.WriteLine(regler());
-                Console.WriteLine(" \r\nskriv start för att starta spelet eller stop för att stänga av programmet!");
+                Console.WriteLine(" \r\nSkriv 'start' för att starta spelet eller 'stop' för att stänga av programmet!");
                 string input = Console.ReadLine();
                 if (input == "start")
                 {
+                    blandaPinnar();
                     inGame = true;
                 }
                 if (input == "stop")
@@ -66,6 +67,13 @@ namespace Spelprojekt_grupp36
             while (ProgramAktivt);
         }
 
+        static void blandaPinnar()
+        {
+            Random r = new Random();
+            pinnar[0] = r.Next(1, 7);
+            pinnar[1] = r.Next(1, 7);
+            pinnar[2] = 15 - pinnar[0] - pinnar[1];
+        }
         static void angeNamn()
         {
             Console.Clear();
@@ -82,8 +90,13 @@ namespace Spelprojekt_grupp36
         }
         static void VinnareOchPaus()
         {
+            senastDrag = "";
             spelaresTur = !spelaresTur;
-            pinnar = new int[] { 5, 5, 5 };
+          blandaPinnar();
+
+
+
+
             pausad = true;
             Console.Clear();
 
@@ -99,12 +112,14 @@ namespace Spelprojekt_grupp36
             {
                 Console.WriteLine("Antal vinster " + spelare1 + ": " + spelare1vinnster + " | Antal vinster " + spelare2 + ": " + spelare2vinnster);
                 Console.WriteLine("spela igen? (y/n)");
-                if (Console.ReadLine() == "y")
+                string input = Console.ReadLine();
+                if (input == "y")
                 {
                     pausad = false;
                 }
-                else if (Console.ReadLine() == "n")
+                else if (input == "n")
                 {
+                    pausad = false;
                     inGame = false;
                     namnAnget = false;
                     spelare1vinnster = 0; spelare2vinnster = 0;
@@ -114,14 +129,15 @@ namespace Spelprojekt_grupp36
             }
             static string regler()
             {
-                string regler = "Välkommen till spelet Nim! \n\n\n\n Nims regler lyder följande: \n 1. Spelet börjar med att 15 pinnar placeras i tre olika lika stora högar. \n 2. Därefter väljer startspelaren först en hög och sedan eliminerar spelaren x antal pinnar från den högen (minst en pinne). \n 3. Därefter gör nästa spelare sak. \n 4. Spelarna turas sedan om till att endast en pinne kvarstår. \n 5. Spelaren som väljer den sista pinnen vinner då spelet.";
+            Console.Clear();
+            string regler = "Välkommen till spelet Nim! \n\n\n\n Nims regler lyder följande: \n 1. Spelet börjar med att 15 pinnar placeras i tre olika lika stora högar. \n 2. Därefter väljer startspelaren först en hög och sedan eliminerar spelaren x antal pinnar från den högen (minst en pinne). \n 3. Därefter gör nästa spelare sak. \n 4. Spelarna turas sedan om till att endast en pinne kvarstår. \n 5. Spelaren som väljer den sista pinnen vinner då spelet. \n 6. Dragen ska skrivas i formatet: <hög> <antal>";
 
                 return regler;
             }
             static void Draget()
 
             {
-              
+
                     Console.WriteLine("Det är " + aktivSpelareNamn() + "s tur");
             
 
