@@ -9,19 +9,19 @@ namespace Spelprojekt_grupp36
     {
         static string senastDrag = "";
 
-        static bool datornPå = false;
+        static bool datornPå = false; //ifall datorn är på
 
-        static bool spelaresTur = true;
+        static bool spelaresTur = true; //eftersom det bara finns två alternativ för vems tur det är används en bool för att hålla reda på det
        
         static int spelare1vinnster = 0;
         static int spelare2vinnster = 0;
 
-        static bool pausad = false;
-        static bool namnAnget = false;
+        static bool pausad = false; 
+        static bool namnAnget = false; //bool ifall spelaren/spelarna har angivit namn ännu
 
-        static string spelare1 = "";
+        static string spelare1 = ""; //spelarna 1 respektive 2s namn
         static string spelare2 = "";
-        static int[] pinnar = new int[3]; 
+        static int[] pinnar = new int[3]; //array för pinnarna
         static bool inGame = false;
         static bool ProgramAktivt = true;
      
