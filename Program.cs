@@ -12,11 +12,11 @@ namespace Spelprojekt_grupp36
         static bool datornPå = false; //ifall datorn är på
 
         static bool spelaresTur = true; //eftersom det bara finns två alternativ för vems tur det är används en bool för att hålla reda på det
-       
+
         static int spelare1vinnster = 0;
         static int spelare2vinnster = 0;
 
-        static bool pausad = false; 
+        static bool pausad = false;
         static bool namnAnget = false; //bool ifall spelaren/spelarna har angivit namn ännu
 
         static string spelare1 = ""; //spelarna 1 respektive 2s namn
@@ -24,12 +24,12 @@ namespace Spelprojekt_grupp36
         static int[] pinnar = new int[3]; //array för pinnarna
         static bool inGame = false;
         static bool ProgramAktivt = true;
-     
+
         static void Main(string[] args)
 
 
         {
-           
+
             /// <summary>
             /// denna do-while loop är hela programmet, när den lämnas så stängs programmet ner 
             /// </summary>
@@ -81,7 +81,7 @@ namespace Spelprojekt_grupp36
 
 
                 }
-                
+
             }
             while (ProgramAktivt);
         }
@@ -89,12 +89,9 @@ namespace Spelprojekt_grupp36
         /// <summary>
         ///  metod som blandar pinnar
         /// </summary>
-        static void blandaPinnar() 
+        static void blandaPinnar()
         {
-            Random r = new Random();
-            pinnar[0] = r.Next(1, 7);
-            pinnar[1] = r.Next(1, 7);
-            pinnar[2] = 15 - pinnar[0] - pinnar[1];
+            pinnar = new int[] { 5, 5, 5 };
         }
         /// <summary>
         /// metod för att ange namn vid spelstart, om datorn spelar behövs bara ett namn
@@ -132,7 +129,7 @@ namespace Spelprojekt_grupp36
         {
             senastDrag = "";
             spelaresTur = !spelaresTur;
-          blandaPinnar();
+            blandaPinnar();
 
 
 
@@ -147,7 +144,7 @@ namespace Spelprojekt_grupp36
             }
 
 
-         
+
             while (pausad)
             {
                 Console.WriteLine("Antal vinster " + spelare1 + ": " + spelare1vinnster + " | Antal vinster " + spelare2 + ": " + spelare2vinnster);
@@ -167,21 +164,21 @@ namespace Spelprojekt_grupp36
                     spelare1vinnster = 0; spelare2vinnster = 0;
 
                 }
-                }
             }
+        }
         /// <summary>
         /// metod som hämtar spel regler + välkomning
         /// </summary>
         /// <returns>
         /// returnerar string med regler
         /// </returns>
-            static string regler()
-            {
+        static string regler()
+        {
             Console.Clear();
             string regler = "Välkommen till spelet Nim! \n\n\n\n Nims regler lyder följande: \n 1. Spelet börjar med att 15 pinnar placeras i tre olika lika stora högar. \n 2. Därefter väljer startspelaren först en hög och sedan eliminerar spelaren x antal pinnar från den högen (minst en pinne). \n 3. Därefter gör nästa spelare sak. \n 4. Spelarna turas sedan om till att endast en pinne kvarstår. \n 5. Spelaren som väljer den sista pinnen vinner då spelet. \n 6. Dragen ska skrivas i formatet: <hög> <antal>";
 
-                return regler;
-            }
+            return regler;
+        }
 
 
         /// <summary>
@@ -195,14 +192,14 @@ namespace Spelprojekt_grupp36
             System.Threading.Thread.Sleep(3000);
 
             Random r = new Random();
-            string[] datorns = new string[] {"0", "0"};
+            string[] datorns = new string[] { "0", "0" };
 
 
             while (datorns[0] == "0") //ser till så att datorn aldrig går igenom 'olagliga' drag; får spelet att prestera bättre
             {
                 datorns[0] = r.Next(1, 4).ToString();
-                if (pinnar[int.Parse(datorns[0])-1] <= 0)
-                         {
+                if (pinnar[int.Parse(datorns[0]) - 1] <= 0)
+                {
                     datorns[0] = "0";
                 }
 
@@ -213,17 +210,17 @@ namespace Spelprojekt_grupp36
                 case "1":
                     if (pinnar[1] == 0 && pinnar[2] == 0)
                         return new string[] { datorns[0], (pinnar[int.Parse(datorns[0]) - 1]).ToString() };
-                    
+
                     break;
                 case "2":
                     if (pinnar[0] == 0 && pinnar[2] == 0)
                         return new string[] { datorns[0], (pinnar[int.Parse(datorns[0]) - 1]).ToString() };
-               
+
                     break;
                 case "3":
                     if (pinnar[0] == 0 && pinnar[1] == 0)
                         return new string[] { datorns[0], (pinnar[int.Parse(datorns[0]) - 1]).ToString() };
-             
+
                     break;
 
             }
@@ -236,12 +233,12 @@ namespace Spelprojekt_grupp36
         /// </summary>
         static void Draget()
 
+        {
+            Console.WriteLine("Det är " + aktivSpelareNamn() + "s tur...");
+
+            try
             {
-                    Console.WriteLine("Det är " + aktivSpelareNamn() + "s tur...");
-        
-                try
-                {
-           
+
                 string[] drag = new string[2];
                 if (datornPå && !spelaresTur)
                 {
@@ -250,36 +247,36 @@ namespace Spelprojekt_grupp36
                 else
                 {
                     Console.WriteLine("ange ditt drag i formatet: <hög> <antal>");
-                  drag = Console.ReadLine().Trim().Split(' ');
+                    drag = Console.ReadLine().Trim().Split(' ');
                 }
 
-              
 
-                    if (möjligtDrag(int.Parse(drag[0]), int.Parse(drag[1])))
-                    {
-                        pinnar[int.Parse(drag[0]) - 1] -= int.Parse(drag[1]);
-                       
-                        Uppdatera();
-                        senastDrag = (aktivSpelareNamn() + " tog " + drag[1] + " pinnar från hög " + drag[0]);
+
+                if (möjligtDrag(int.Parse(drag[0]), int.Parse(drag[1])))
+                {
+                    pinnar[int.Parse(drag[0]) - 1] -= int.Parse(drag[1]);
+
+                    Uppdatera();
+                    senastDrag = (aktivSpelareNamn() + " tog " + drag[1] + " pinnar från hög " + drag[0]);
                     spelaresTur = !spelaresTur;
                 }
-                    else
-                    {
-                        Uppdatera();
-                        Console.WriteLine("Draget var icke möjligt, försök igen!");
-                        Draget();
-                    }
-
-
-                }
-                catch
+                else
                 {
                     Uppdatera();
                     Console.WriteLine("Draget var icke möjligt, försök igen!");
                     Draget();
                 }
-            
+
+
             }
+            catch
+            {
+                Uppdatera();
+                Console.WriteLine("Draget var icke möjligt, försök igen!");
+                Draget();
+            }
+
+        }
 
         /// <summary>
         /// beräknar om draget följer nim-reglerna
@@ -293,32 +290,32 @@ namespace Spelprojekt_grupp36
         /// <returns>
         /// returnerar en bool ifall det är lagligt eller ej
         /// </returns>
-            static bool möjligtDrag(int hög, int antal)
+        static bool möjligtDrag(int hög, int antal)
+        {
+            try
             {
-                try
-                {
-                    if (pinnar[hög - 1] < antal || antal <= 0)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
-                catch
+                if (pinnar[hög - 1] < antal || antal <= 0)
                 {
                     return false;
                 }
+
+                return true;
             }
-        
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// rensar skärmen och ritar upp spelbrädet samt skriver ut det senaste draget som utförts
         /// </summary>
-            static void Uppdatera() 
-            {
-                Console.Clear();
-                Console.WriteLine(senastDrag);
+        static void Uppdatera()
+        {
+            Console.Clear();
+            Console.WriteLine(senastDrag);
 
-            for (int i = 0; i  < pinnar.Length; i++)
+            for (int i = 0; i < pinnar.Length; i++)
             {
                 Console.Write("hög " + (i + 1) + ": ");
                 for (int j = 0; j < pinnar[i]; j++)
@@ -328,6 +325,6 @@ namespace Spelprojekt_grupp36
                 Console.WriteLine();
             }
 
-            }
         }
     }
+}
