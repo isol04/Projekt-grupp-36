@@ -35,7 +35,11 @@ namespace Spelprojekt_grupp36
             /// </summary>
             do
             {
+                Console.BackgroundColor = ConsoleColor.Cyan;
+                Console.Clear();
 
+                Console.ForegroundColor = ConsoleColor.Black;
+                
                 Console.WriteLine(regler());
                 Console.WriteLine(" \r\nSkriv 'start' för att starta spelet eller 'dator' för att spela mot datorn eller 'stop' för att stänga av programmet!");
                 string input = Console.ReadLine();
